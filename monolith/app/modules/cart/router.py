@@ -15,7 +15,7 @@ async def add_item(
     db: AsyncSession = Depends(get_db),
 ):
     try:
-        await service.add_to_cart(db, current_user.id, data)
+        await service.add_to_cart(db, current_user.user_id, data)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
     return {"status": "added"}
@@ -23,7 +23,7 @@ async def add_item(
 
 @router.get("", response_model=schemas.CartResponse)
 async def get_cart(current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    items, total = await service.get_cart(db, current_user.id)
+    items, total = await service.get_cart(db, current_user.user_id)
     return schemas.CartResponse(items=items, total=total)
 
 
@@ -33,6 +33,6 @@ async def remove_item(
     current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    removed = await service.remove_from_cart(db, current_user.id, product_id)
+    removed = await service.remove_from_cart(db, current_user.user_id, product_id)
     if not removed:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not in cart")

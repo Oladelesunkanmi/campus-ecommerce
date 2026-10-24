@@ -33,7 +33,7 @@ async def create_product(
     current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    return await service.create_product(db, current_user.id, data)
+    return await service.create_product(db, current_user.user_id, data)
 
 
 @router.patch("/{product_id}/stock", response_model=schemas.ProductResponse)

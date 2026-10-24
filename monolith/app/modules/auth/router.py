@@ -22,10 +22,13 @@ async def login(data: schemas.LoginRequest, db: AsyncSession = Depends(get_db)):
     user = await service.authenticate_user(db, data.email, data.password)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    token = create_access_token(user.id)
+    token = create_access_token(user.id, user.email)
     return schemas.TokenResponse(access_token=token)
 
 
 @router.get("/me", response_model=schemas.UserResponse)
-async def me(current_user=Depends(get_current_user)):
-    return current_user
+async def me(current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    user = await service.get_user_by_id(db, current_user.user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return user

@@ -28,3 +28,8 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> User
     if user is None or not verify_password(password, user.password_hash):
         return None
     return user
+
+
+async def get_user_by_id(db: AsyncSession, user_id: int) -> User | None:
+    result = await db.execute(select(User).where(User.id == user_id))
+    return result.scalar_one_or_none()
