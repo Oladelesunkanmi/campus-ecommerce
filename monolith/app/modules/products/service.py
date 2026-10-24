@@ -60,7 +60,6 @@ async def restore_stock(db: AsyncSession, product_id: int, qty: int) -> None:
     product = await get_product(db, product_id)
     if product is not None:
         product.stock += qty
-        await db.commit()
 
 
 async def get_products_by_ids(db: AsyncSession, ids: list[int]):

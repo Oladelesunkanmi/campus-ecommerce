@@ -1,10 +1,16 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:16.4
     environment:
       POSTGRES_USER: campus
       POSTGRES_PASSWORD: campus
       POSTGRES_DB: campus
+    command: >
+      postgres
+      -c max_connections=100
+      -c shared_buffers=256MB
+      -c work_mem=4MB
+      -c fsync=on
     ports:
       - "5432:5432"
     healthcheck:

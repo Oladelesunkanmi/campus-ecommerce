@@ -161,7 +161,44 @@ async def async_tests():
         print("CONCURRENCY TEST PASSED")
 
 
+def failure_injection_test():
+    client = httpx.Client(base_url=BASE_URL, timeout=30.0)
+    email = f"inj-{uuid.uuid4().hex[:8]}@example.com"
+    password = "secret123"
+    client.post("/auth/register", json={"email": email, "password": password, "full_name": "Inj"})
+    r = client.post("/auth/login", json={"email": email, "password": password})
+    token = r.json()["access_token"]
+    auth = {"Authorization": f"Bearer {token}"}
+    # create product
+    r = client.post("/products", json={"name": "InjProd", "description": "d", "category": "c", "price": 5.0, "stock": 10}, headers=auth)
+    product_id = r.json()["id"]
+    # add to cart
+    client.post("/cart/items", json={"product_id": product_id, "quantity": 2}, headers=auth)
+    # stock before
+    stock_before = client.get(f"/products/{product_id}").json()["stock"]
+    cart_before = client.get("/cart", headers=auth).json()
+    orders_before = client.get("/orders", headers=auth).json()
+    # checkout should fail
+    r = client.post("/orders/checkout", headers=auth)
+    assert r.status_code >= 400, r.text
+    print("injection checkout failed as expected:", r.status_code)
+    # stock unchanged
+    stock_after = client.get(f"/products/{product_id}").json()["stock"]
+    assert stock_after == stock_before, (stock_before, stock_after)
+    # cart unchanged
+    cart_after = client.get("/cart", headers=auth).json()
+    assert cart_after == cart_before, (cart_before, cart_after)
+    # orders unchanged
+    orders_after = client.get("/orders", headers=auth).json()
+    assert len(orders_after) == len(orders_before), (len(orders_before), len(orders_after))
+    print("INJECTION TEST PASSED: stock, cart, orders unchanged")
+
+
 if __name__ == "__main__":
-    main()
-    asyncio.run(async_tests())
-    print("ALL SMOKE TESTS PASSED")
+    if os.environ.get("FAIL_PAYMENT") == "1":
+        failure_injection_test()
+        print("ALL SMOKE TESTS PASSED")
+    else:
+        main()
+        asyncio.run(async_tests())
+        print("ALL SMOKE TESTS PASSED")

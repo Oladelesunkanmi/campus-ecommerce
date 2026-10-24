@@ -1,4 +1,5 @@
 import asyncio
+import os
 import uuid
 
 from sqlalchemy import select
@@ -11,6 +12,8 @@ from app.modules.payments.schemas import PaymentCreate
 
 async def create_payment(db: AsyncSession, order_id: int, amount: float) -> Payment:
     await asyncio.sleep(settings.PAYMENT_DELAY_MS / 1000.0)
+    if os.environ.get("FAIL_PAYMENT") == "1":
+        raise RuntimeError("simulated payment failure")
     payment = Payment(
         order_id=order_id,
         amount=amount,

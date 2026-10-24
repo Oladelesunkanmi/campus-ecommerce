@@ -16,6 +16,8 @@ async def checkout(current_user=Depends(get_current_user), db: AsyncSession = De
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cart is empty")
     except service.InsufficientStock:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Insufficient stock")
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Payment failed")
     return schemas.OrderResponse(
         id=order.id,
         buyer_id=order.buyer_id,
