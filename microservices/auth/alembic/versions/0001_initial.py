@@ -22,3 +22,7 @@ def upgrade():
 
 def downgrade():
     op.drop_table("users")
+
+def downgrade():
+    op.drop_index("ix_users_email", table_name="users")
+    op.drop_table("users")
