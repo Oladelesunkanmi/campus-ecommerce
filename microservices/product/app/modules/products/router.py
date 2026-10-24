@@ -52,10 +52,16 @@ async def update_stock(
 @router.post("/internal/reserve", status_code=200)
 async def internal_reserve(data: schemas.ReserveRequest, db=Depends(get_db)):
     try:
-        await service.reserve_all(db, data.items)
+        result = await service.reserve_all(db, data.items)
     except ValueError:
         raise HTTPException(status_code=409, detail="Insufficient stock")
-    return {"status": "reserved"}
+    return result
+
+
+@router.post("/internal/batch", status_code=200)
+async def internal_batch(data: schemas.BatchRequest, db=Depends(get_db)):
+    products = await service.get_products_by_ids(db, data.ids)
+    return [{"id": p.id, "name": p.name, "price": float(p.price), "stock": p.stock} for p in products]
 
 
 @router.post("/internal/restore", status_code=200)

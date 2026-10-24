@@ -32,3 +32,7 @@ class ReserveItem(BaseModel):
 
 class ReserveRequest(BaseModel):
     items: list[ReserveItem]
+
+
+class BatchRequest(BaseModel):
+    ids: list[int]

@@ -71,12 +71,14 @@ async def get_products_by_ids(db: AsyncSession, ids: list[int]):
 
 async def reserve_all(db, items):
     try:
+        products = await get_products_by_ids(db, [it.product_id for it in items])
+        product_map = {p.id: p for p in products}
         for it in items:
             ok = await reserve_stock(db, it.product_id, it.quantity)
             if not ok:
                 raise ValueError("insufficient stock")
         await db.commit()
-        return True
+        return [{"product_id": it.product_id, "quantity": it.quantity, "unit_price": float(product_map[it.product_id].price)} for it in items]
     except Exception:
         await db.rollback()
         raise
