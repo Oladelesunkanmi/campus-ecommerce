@@ -32,3 +32,11 @@ async def internal_charge(data: schemas.PaymentCreate, db: AsyncSession = Depend
     payment = await service.create_payment(db, data.order_id, data.amount)
     await db.commit()
     return payment
+
+
+@router.get("/internal/by-order/{order_id}", response_model=schemas.PaymentResponse)
+async def internal_get_by_order(order_id: int, db: AsyncSession = Depends(get_db)):
+    payment = await service.get_payment_by_order(db, order_id)
+    if payment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Payment not found")
+    return payment

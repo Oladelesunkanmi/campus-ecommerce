@@ -35,6 +35,12 @@ services:
         condition: service_healthy
       product:
         condition: service_healthy
+      cart:
+        condition: service_healthy
+      order:
+        condition: service_healthy
+      payment:
+        condition: service_healthy
     deploy:
       resources:
         limits:
@@ -120,6 +126,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      cart:
+        condition: service_healthy
+      product:
+        condition: service_healthy
+      payment:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 5s
@@ -136,6 +148,7 @@ services:
     environment:
       WORKERS: "1"
       LOG_LEVEL: warning
+      FAIL_PAYMENT: ${FAIL_PAYMENT:-0}
     depends_on:
       db:
         condition: service_healthy
