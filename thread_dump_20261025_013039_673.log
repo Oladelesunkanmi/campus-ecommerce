@@ -1,0 +1,69 @@
+"Reference Handler" daemon prio=10 Id=13 RUNNABLE
+	at java.base@24.0.1/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+	at java.base@24.0.1/java.lang.ref.Reference.processPendingReferences(Reference.java:246)
+	at java.base@24.0.1/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:208)
+
+"Finalizer" daemon prio=8 Id=14 WAITING on java.lang.ref.ReferenceQueue$Lock@7551d0f4
+	at java.base@24.0.1/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.ref.ReferenceQueue$Lock@7551d0f4
+	at java.base@24.0.1/java.lang.Object.wait(Object.java:389)
+	at java.base@24.0.1/java.lang.Object.wait(Object.java:351)
+	at java.base@24.0.1/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:138)
+	at java.base@24.0.1/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:229)
+	at java.base@24.0.1/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:165)
+
+"Signal Dispatcher" daemon prio=9 Id=15 RUNNABLE
+
+"Attach Listener" daemon prio=5 Id=16 RUNNABLE
+
+"Notification Thread" daemon prio=9 Id=22 RUNNABLE
+
+"Common-Cleaner" daemon prio=8 Id=23 TIMED_WAITING on java.lang.ref.ReferenceQueue$Lock@40fd5638
+	at java.base@24.0.1/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.ref.ReferenceQueue$Lock@40fd5638
+	at java.base@24.0.1/java.lang.Object.wait(Object.java:389)
+	at java.base@24.0.1/java.lang.ref.ReferenceQueue.remove0(ReferenceQueue.java:124)
+	at java.base@24.0.1/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:215)
+	at java.base@24.0.1/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:140)
+	at java.base@24.0.1/java.lang.Thread.runWith(Thread.java:1460)
+	at java.base@24.0.1/java.lang.Thread.run(Thread.java:1447)
+	at java.base@24.0.1/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:148)
+
+"StandardJMeterEngine-1" prio=5 Id=29 TIMED_WAITING on java.lang.Thread@529cc4d4
+	at java.base@24.0.1/java.lang.Object.wait0(Native Method)
+	-  waiting on java.lang.Thread@529cc4d4
+	at java.base@24.0.1/java.lang.Object.wait(Object.java:389)
+	at java.base@24.0.1/java.lang.Thread.join(Thread.java:1854)
+	at org.apache.jmeter.threads.ThreadGroup.waitThreadStopped(ThreadGroup.java:495)
+	at org.apache.jmeter.threads.ThreadGroup$$Lambda/0x000001cc011bf0f0.accept(Unknown Source)
+	at java.base@24.0.1/java.util.concurrent.ConcurrentHashMap$ValuesView.forEach(ConcurrentHashMap.java:4799)
+	at org.apache.jmeter.threads.ThreadGroup.waitThreadsStopped(ThreadGroup.java:480)
+	at org.apache.jmeter.engine.StandardJMeterEngine.waitThreadsStopped(StandardJMeterEngine.java:591)
+	...
+
+	Number of locked synchronizers = 1
+	- java.util.concurrent.ThreadPoolExecutor$Worker@88d6f9b
+
+"UDP Listener" daemon prio=5 Id=30 RUNNABLE
+	at java.management@24.0.1/sun.management.ThreadImpl.dumpThreads0(Native Method)
+	at java.management@24.0.1/sun.management.ThreadImpl.dumpAllThreads(ThreadImpl.java:505)
+	at java.management@24.0.1/sun.management.ThreadImpl.dumpAllThreads(ThreadImpl.java:493)
+	at org.apache.jorphan.util.ThreadDumper.writeThreadDump(ThreadDumper.java:80)
+	at org.apache.jorphan.util.ThreadDumper.threadDump(ThreadDumper.java:68)
+	at org.apache.jorphan.util.ThreadDumper.threadDump(ThreadDumper.java:51)
+	at org.apache.jmeter.JMeter.waitForSignals(JMeter.java:1430)
+	at org.apache.jmeter.JMeter.access$300(JMeter.java:110)
+	...
+
+"DestroyJavaVM" prio=5 Id=32 RUNNABLE
+
+"Load Test Users 1-1" prio=5 Id=35 RUNNABLE
+	at org.apache.jmeter.testelement.TestElement.getPropertyOrNull(TestElement.kt:267)
+	at org.apache.jmeter.testelement.TestElement.getOrNull(TestElement.kt:440)
+	at org.apache.jmeter.testelement.TestElement.get(TestElement.kt:452)
+	at org.apache.jmeter.threads.AbstractThreadGroup.getSamplerController(AbstractThreadGroup.java:118)
+	at org.apache.jmeter.threads.AbstractThreadGroup.next(AbstractThreadGroup.java:109)
+	at org.apache.jmeter.threads.JMeterThread.run(JMeterThread.java:266)
+	at java.base@24.0.1/java.lang.Thread.runWith(Thread.java:1460)
+	at java.base@24.0.1/java.lang.Thread.run(Thread.java:1447)
+
